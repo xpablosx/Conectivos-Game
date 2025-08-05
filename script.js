@@ -374,7 +374,6 @@ async function verificarRespostas() {
         }
 
         pontuacaoTotal = pontuacao;
-        atualizarPontuacao();
         
         // Mostrar feedback no console para debug
         console.log(`Acertos: ${acertos}/${totalLacunas} | Pontuação: ${pontuacao}`);
