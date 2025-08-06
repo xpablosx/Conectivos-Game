@@ -164,6 +164,26 @@ function obterConectivoLinha(index) {
 
 // Função para criar a tabela
 function criarTabela() {
+    const isMobile = window.innerWidth <= 768;
+    const tableContainer = document.getElementById('conectivos-table');
+    const mobileCardsContainer = document.getElementById('mobile-cards-container');
+
+    if (isMobile) {
+        tableContainer.style.display = 'none';
+        mobileCardsContainer.style.display = 'block';
+        criarLayoutMobile();
+    } else {
+        tableContainer.style.display = 'table';
+        mobileCardsContainer.style.display = 'none';
+        criarTabelaDesktop();
+    }
+}
+
+// Adicionar listener para redimensionamento da janela
+window.addEventListener('resize', criarTabela);
+
+// Função para criar tabela desktop
+function criarTabelaDesktop() {
     const tbody = document.querySelector('#conectivos-table tbody');
     tbody.innerHTML = '';
 
@@ -220,20 +240,29 @@ function criarTabela() {
         tbody.appendChild(tr);
     });
 
-    // Criar layout mobile em paralelo
-    criarLayoutMobile();
+    // Limpar container mobile se existir
+    const mobileContainer = document.querySelector('.mobile-cards-container');
+    if (mobileContainer) {
+        mobileContainer.innerHTML = '';
+    }
 }
 
 // Função para criar layout mobile em cards
 function criarLayoutMobile() {
-    // Verificar se já existe o container mobile
-    let mobileContainer = document.querySelector('.mobile-cards-container');
-    if (!mobileContainer) {
-        mobileContainer = document.createElement('div');
-        mobileContainer.className = 'mobile-cards-container';
-        document.querySelector('.game-container').appendChild(mobileContainer);
+    // Limpar tabela desktop
+    const tbody = document.querySelector('#conectivos-table tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
     }
     
+    // Obter container mobile
+    const mobileContainer = document.getElementById('mobile-cards-container');
+    if (!mobileContainer) {
+        console.error('Container mobile não encontrado');
+        return;
+    }
+    
+    // Limpar container mobile
     mobileContainer.innerHTML = '';
 
     configuracaoTabela.forEach((linha, index) => {
@@ -469,6 +498,12 @@ function inicializar() {
     document.getElementById('tentar-novamente-btn').addEventListener('click', reiniciarJogoComNovaTabela);
     document.getElementById('regras-btn').addEventListener('click', abrirModalRegras);
     document.getElementById('fechar-regras-btn').addEventListener('click', fecharModalRegras);
+    
+    // Listener para redimensionamento da janela
+    window.addEventListener('resize', function() {
+        // Recriar layout quando a janela for redimensionada
+        criarTabela();
+    });
     
     // Fechar modal ao clicar fora
     document.getElementById('modal-resultados-overlay').addEventListener('click', function(e) {

@@ -218,6 +218,22 @@ main {
     }
 }
 
+/* Container para cards mobile - escondido por padrão em desktop */
+.mobile-cards-container {
+    display: none;
+}
+
+/* Garantir que apenas um layout seja exibido por vez */
+@media (min-width: 769px) {
+    .mobile-cards-container {
+        display: none !important;
+    }
+    
+    #conectivos-table {
+        display: table !important;
+    }
+}
+
 @media (max-width: 768px) {
     header {
         padding: 1.5rem 1rem;
