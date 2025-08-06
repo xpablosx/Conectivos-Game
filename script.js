@@ -1,159 +1,63 @@
-// Banco de dados de conectivos e seus tipos
-const conectivosDB = {
+// Variáveis globais
+let configuracaoTabela = [];
+let configuracaoAtual = 0;
+let modalResultadosAberto = false;
+let modalRegrasAberto = false;
+
+// Banco de dados de conectivos
+const bancoConectivos = {
     'Adição': ['Ademais', 'Outrossim', 'E assim'],
     'Conclusão': ['Portanto', 'Por isso', 'Dessa forma'],
     'Explicação': ['Logo', 'Então', 'Seguindo o raciocínio'],
     'Conformidade': ['Conforme', 'É esse respeito'],
     'Contraste/Oposição': ['Entretanto', 'Todavia'],
-    'Oposição': ['Entretanto', 'Todavia'], // Alias para Contraste/Oposição
     'Causa e consequência': ['A partir disso', 'Sob essa perspectiva']
 };
 
-// Variáveis globais
-let pontuacaoTotal = 0;
-let validandoFrases = false;
-let modalAberto = false;
-let modalRegrasAberto = false;
-
-// Configurações de tabela para variedade no jogo
-const configuracoesTabela = [
-    // Configuração 1 (original)
+// Configurações de tabela para variedade
+const configuracoesPossiveis = [
     [
-        {
-            conectivo: { valor: 'Ademais', corretos: ['Ademais'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Adição'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Ademais' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Conclusão'], pontos: 1 },
-            tipo: { valor: 'Conclusão', corretos: ['Conclusão'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Logo', corretos: ['Logo'], pontos: 0 },
-            tipo: { valor: 'Explicação', corretos: ['Explicação'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Logo' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Adição'], pontos: 1 },
-            tipo: { valor: 'Adição', corretos: ['Adição'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Portanto', corretos: ['Portanto'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Conclusão'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Portanto' }
-        },
-        {
-            conectivo: { valor: 'Entretanto', corretos: ['Entretanto'], pontos: 0 },
-            tipo: { valor: 'Oposição', corretos: ['Oposição', 'Contraste/Oposição'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Entretanto' }
-        },
-        {
-            conectivo: { valor: 'Conforme', corretos: ['Conforme'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Conformidade'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Conforme' }
-        }
+        { conectivo: { valor: 'Ademais', respostas: [] }, tipo: { valor: '', respostas: ['Adição'] } },
+        { conectivo: { valor: '', respostas: ['Portanto', 'Por isso', 'Dessa forma'] }, tipo: { valor: 'Conclusão', respostas: [] } },
+        { conectivo: { valor: 'Logo', respostas: [] }, tipo: { valor: 'Explicação', respostas: [] } },
+        { conectivo: { valor: '', respostas: ['Ademais', 'Outrossim', 'E assim'] }, tipo: { valor: 'Adição', respostas: [] } },
+        { conectivo: { valor: 'Portanto', respostas: [] }, tipo: { valor: '', respostas: ['Conclusão'] } },
+        { conectivo: { valor: 'Entretanto', respostas: [] }, tipo: { valor: 'Oposição', respostas: [] } },
+        { conectivo: { valor: 'Conforme', respostas: [] }, tipo: { valor: '', respostas: ['Conformidade'] } }
     ],
-    // Configuração 2
     [
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Contraste/Oposição'], pontos: 1 },
-            tipo: { valor: 'Contraste/Oposição', corretos: ['Contraste/Oposição', 'Oposição'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Outrossim', corretos: ['Outrossim'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Adição'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Outrossim' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Explicação'], pontos: 1 },
-            tipo: { valor: 'Explicação', corretos: ['Explicação'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Por isso', corretos: ['Por isso'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Conclusão'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Por isso' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Causa e consequência'], pontos: 1 },
-            tipo: { valor: 'Causa e consequência', corretos: ['Causa e consequência'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'É esse respeito', corretos: ['É esse respeito'], pontos: 0 },
-            tipo: { valor: 'Conformidade', corretos: ['Conformidade'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'É esse respeito' }
-        },
-        {
-            conectivo: { valor: 'Dessa forma', corretos: ['Dessa forma'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Conclusão'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Dessa forma' }
-        }
+        { conectivo: { valor: 'Então', respostas: [] }, tipo: { valor: '', respostas: ['Explicação'] } },
+        { conectivo: { valor: '', respostas: ['Ademais', 'Outrossim', 'E assim'] }, tipo: { valor: 'Adição', respostas: [] } },
+        { conectivo: { valor: 'Todavia', respostas: [] }, tipo: { valor: 'Contraste/Oposição', respostas: [] } },
+        { conectivo: { valor: '', respostas: ['Conforme', 'É esse respeito'] }, tipo: { valor: 'Conformidade', respostas: [] } },
+        { conectivo: { valor: 'Sob essa perspectiva', respostas: [] }, tipo: { valor: '', respostas: ['Causa e consequência'] } },
+        { conectivo: { valor: '', respostas: ['Portanto', 'Por isso', 'Dessa forma'] }, tipo: { valor: 'Conclusão', respostas: [] } },
+        { conectivo: { valor: 'Seguindo o raciocínio', respostas: [] }, tipo: { valor: 'Explicação', respostas: [] } }
     ],
-    // Configuração 3
     [
-        {
-            conectivo: { valor: 'Então', corretos: ['Então'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Explicação'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Então' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Adição'], pontos: 1 },
-            tipo: { valor: 'Adição', corretos: ['Adição'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Todavia', corretos: ['Todavia'], pontos: 0 },
-            tipo: { valor: 'Contraste/Oposição', corretos: ['Contraste/Oposição', 'Oposição'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Todavia' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Conformidade'], pontos: 1 },
-            tipo: { valor: 'Conformidade', corretos: ['Conformidade'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Sob essa perspectiva', corretos: ['Sob essa perspectiva'], pontos: 0 },
-            tipo: { valor: '', corretos: ['Causa e consequência'], pontos: 1 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Sob essa perspectiva' }
-        },
-        {
-            conectivo: { valor: '', corretos: conectivosDB['Conclusão'], pontos: 1 },
-            tipo: { valor: 'Conclusão', corretos: ['Conclusão'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: '' }
-        },
-        {
-            conectivo: { valor: 'Seguindo o raciocínio', corretos: ['Seguindo o raciocínio'], pontos: 0 },
-            tipo: { valor: 'Explicação', corretos: ['Explicação'], pontos: 0 },
-            frase: { valor: '', corretos: [], pontos: 1, conectivoUsado: 'Seguindo o raciocínio' }
-        }
+        { conectivo: { valor: '', respostas: ['A partir disso', 'Sob essa perspectiva'] }, tipo: { valor: 'Causa e consequência', respostas: [] } },
+        { conectivo: { valor: 'Outrossim', respostas: [] }, tipo: { valor: '', respostas: ['Adição'] } },
+        { conectivo: { valor: '', respostas: ['Entretanto', 'Todavia'] }, tipo: { valor: 'Contraste/Oposição', respostas: [] } },
+        { conectivo: { valor: 'Por isso', respostas: [] }, tipo: { valor: 'Conclusão', respostas: [] } },
+        { conectivo: { valor: 'É esse respeito', respostas: [] }, tipo: { valor: '', respostas: ['Conformidade'] } },
+        { conectivo: { valor: '', respostas: ['Logo', 'Então', 'Seguindo o raciocínio'] }, tipo: { valor: 'Explicação', respostas: [] } },
+        { conectivo: { valor: 'E assim', respostas: [] }, tipo: { valor: '', respostas: ['Adição'] } }
     ]
 ];
 
-// Configuração atual da tabela
-let configuracaoTabela = configuracoesTabela[0];
-
-// Função para normalizar texto (remover acentos e converter para minúsculas)
-function normalizarTexto(texto) {
-    return texto.toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim();
-}
-
-// Função para verificar se a resposta está correta (aceita múltiplas respostas)
-function verificarResposta(resposta, respostasCorretas) {
-    const respostaNormalizada = normalizarTexto(resposta);
-    return respostasCorretas.some(correta => 
-        normalizarTexto(correta) === respostaNormalizada
-    );
+// Função para validar frase localmente (fallback)
+function validarFraseLocal(frase, conectivo) {
+    if (!frase || frase.length < 10) return { pontuacao: 0, feedback: ['Frase muito curta'] };
+    if (frase.split(' ').length < 3) return { pontuacao: 0, feedback: ['Frase deve ter pelo menos 3 palavras'] };
+    if (!/^[A-ZÁÀÂÃÉÈÊÍÌÎÓÒÔÕÚÙÛÇ]/.test(frase)) return { pontuacao: 0, feedback: ['Deve começar com maiúscula'] };
+    if (!/[.!?]$/.test(frase)) return { pontuacao: 0, feedback: ['Deve terminar com pontuação'] };
+    if (!frase.toLowerCase().includes(conectivo.toLowerCase())) return { pontuacao: 0, feedback: ['Deve conter o conectivo'] };
+    
+    return { pontuacao: 1, feedback: ['Frase válida'] };
 }
 
 // Função para validar frase via API
-async function validarFraseViaAPI(frase, conectivo) {
+async function validarFrase(frase, conectivo) {
     try {
         const response = await fetch('/api/validar-frase', {
             method: 'POST',
@@ -167,65 +71,108 @@ async function validarFraseViaAPI(frase, conectivo) {
         });
 
         if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
+            throw new Error('Erro na API');
         }
 
-        const data = await response.json();
-        
-        if (data.sucesso) {
-            return data.resultado;
-        } else {
-            throw new Error(data.erro || 'Erro desconhecido na validação');
-        }
+        const resultado = await response.json();
+        return resultado;
     } catch (error) {
-        console.error('Erro ao validar frase:', error);
-        // Fallback: validação básica local
+        console.log('Usando validação local como fallback');
         return validarFraseLocal(frase, conectivo);
     }
 }
 
-// Função de validação local como fallback
-function validarFraseLocal(frase, conectivo) {
-    const fraseValida = frase.length >= 10 && 
-                       frase.trim().split(' ').length >= 3 &&
-                       /^[A-Z]/.test(frase) &&
-                       /[.!?]$/.test(frase.trim());
+// Função para obter valor do conectivo (desktop ou mobile)
+function obterValorConectivo(index) {
+    // Tentar primeiro o campo desktop
+    const inputDesktop = document.getElementById(`conectivo-${index}`);
+    if (inputDesktop) {
+        return inputDesktop.value.trim();
+    }
     
-    const conectivoPresente = !conectivo || 
-                             frase.toLowerCase().includes(conectivo.toLowerCase());
+    // Se não encontrar, tentar o campo mobile
+    const inputMobile = document.getElementById(`mobile-conectivo-${index}`);
+    if (inputMobile) {
+        return inputMobile.value.trim();
+    }
     
-    const pontuacao = (fraseValida && conectivoPresente) ? 1 : 0;
-    
-    return {
-        valida: pontuacao === 1,
-        pontuacao: pontuacao,
-        pontos: pontuacao,
-        feedback: pontuacao === 1 ? 
-                 ['✓ Frase válida (validação local)'] : 
-                 ['✗ Frase inválida (validação local)']
-    };
+    return '';
 }
 
-// Função para obter o conectivo usado na linha
-function obterConectivoUsado(linha, index) {
+// Função para obter valor do tipo (desktop ou mobile)
+function obterValorTipo(index) {
+    // Tentar primeiro o campo desktop
+    const inputDesktop = document.getElementById(`tipo-${index}`);
+    if (inputDesktop) {
+        return inputDesktop.value.trim();
+    }
+    
+    // Se não encontrar, tentar o campo mobile
+    const inputMobile = document.getElementById(`mobile-tipo-${index}`);
+    if (inputMobile) {
+        return inputMobile.value.trim();
+    }
+    
+    return '';
+}
+
+// Função para obter valor da frase (desktop ou mobile)
+function obterValorFrase(index) {
+    // Tentar primeiro o campo desktop
+    const inputDesktop = document.getElementById(`frase-${index}`);
+    if (inputDesktop) {
+        return inputDesktop.value.trim();
+    }
+    
+    // Se não encontrar, tentar o campo mobile
+    const inputMobile = document.getElementById(`mobile-frase-${index}`);
+    if (inputMobile) {
+        return inputMobile.value.trim();
+    }
+    
+    return '';
+}
+
+// Função para aplicar feedback visual (desktop ou mobile)
+function aplicarFeedback(index, tipo, correto) {
+    const classe = correto ? 'correct' : 'incorrect';
+    
+    // Aplicar no campo desktop se existir
+    const inputDesktop = document.getElementById(`${tipo}-${index}`);
+    if (inputDesktop) {
+        inputDesktop.classList.remove('correct', 'incorrect');
+        inputDesktop.classList.add(classe);
+    }
+    
+    // Aplicar no campo mobile se existir
+    const inputMobile = document.getElementById(`mobile-${tipo}-${index}`);
+    if (inputMobile) {
+        inputMobile.classList.remove('correct', 'incorrect');
+        inputMobile.classList.add(classe);
+    }
+}
+
+// Função para obter o conectivo da linha (preenchido ou digitado)
+function obterConectivoLinha(index) {
+    const linha = configuracaoTabela[index];
     if (linha.conectivo.valor !== '') {
         return linha.conectivo.valor;
     } else {
-        const inputConectivo = document.getElementById(`conectivo-${index}`);
-        return inputConectivo ? inputConectivo.value.trim() : '';
+        return obterValorConectivo(index);
     }
 }
 
 // Função para criar a tabela
 function criarTabela() {
-    const tbody = document.getElementById('table-body');
+    const tbody = document.querySelector('#conectivos-table tbody');
     tbody.innerHTML = '';
 
     configuracaoTabela.forEach((linha, index) => {
         const tr = document.createElement('tr');
-        
+
         // Coluna Conectivo
         const tdConectivo = document.createElement('td');
+        tdConectivo.setAttribute('data-label', 'Conectivo:');
         if (linha.conectivo.valor === '') {
             const input = document.createElement('input');
             input.type = 'text';
@@ -243,6 +190,7 @@ function criarTabela() {
 
         // Coluna Tipo
         const tdTipo = document.createElement('td');
+        tdTipo.setAttribute('data-label', 'Tipo:');
         if (linha.tipo.valor === '') {
             const input = document.createElement('input');
             input.type = 'text';
@@ -260,6 +208,7 @@ function criarTabela() {
 
         // Coluna Frase (sempre vazia para o usuário preencher)
         const tdFrase = document.createElement('td');
+        tdFrase.setAttribute('data-label', 'Frase:');
         const inputFrase = document.createElement('input');
         inputFrase.type = 'text';
         inputFrase.className = 'input-field';
@@ -270,327 +219,271 @@ function criarTabela() {
 
         tbody.appendChild(tr);
     });
+
+    // Criar layout mobile em paralelo
+    criarLayoutMobile();
+}
+
+// Função para criar layout mobile em cards
+function criarLayoutMobile() {
+    // Verificar se já existe o container mobile
+    let mobileContainer = document.querySelector('.mobile-cards-container');
+    if (!mobileContainer) {
+        mobileContainer = document.createElement('div');
+        mobileContainer.className = 'mobile-cards-container';
+        document.querySelector('.game-container').appendChild(mobileContainer);
+    }
+    
+    mobileContainer.innerHTML = '';
+
+    configuracaoTabela.forEach((linha, index) => {
+        // Criar card mobile
+        const card = document.createElement('div');
+        card.className = 'mobile-card';
+        
+        // Número do card
+        const cardNumber = document.createElement('div');
+        cardNumber.className = 'card-number';
+        cardNumber.textContent = index + 1;
+        card.appendChild(cardNumber);
+
+        // Seção Conectivo
+        const conectivoSection = document.createElement('div');
+        conectivoSection.className = 'card-section';
+        
+        const conectivoLabel = document.createElement('label');
+        conectivoLabel.className = 'card-label';
+        conectivoLabel.textContent = '🔗 Conectivo';
+        conectivoSection.appendChild(conectivoLabel);
+
+        if (linha.conectivo.valor === '') {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'mobile-input';
+            input.id = `mobile-conectivo-${index}`;
+            input.placeholder = 'Digite o conectivo...';
+            conectivoSection.appendChild(input);
+        } else {
+            const filled = document.createElement('div');
+            filled.className = 'mobile-filled';
+            filled.textContent = linha.conectivo.valor;
+            conectivoSection.appendChild(filled);
+        }
+        card.appendChild(conectivoSection);
+
+        // Seção Tipo
+        const tipoSection = document.createElement('div');
+        tipoSection.className = 'card-section';
+        
+        const tipoLabel = document.createElement('label');
+        tipoLabel.className = 'card-label';
+        tipoLabel.textContent = '📝 Tipo de Conectivo';
+        tipoSection.appendChild(tipoLabel);
+
+        if (linha.tipo.valor === '') {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'mobile-input';
+            input.id = `mobile-tipo-${index}`;
+            input.placeholder = 'Digite o tipo...';
+            tipoSection.appendChild(input);
+        } else {
+            const filled = document.createElement('div');
+            filled.className = 'mobile-filled';
+            filled.textContent = linha.tipo.valor;
+            tipoSection.appendChild(filled);
+        }
+        card.appendChild(tipoSection);
+
+        // Seção Frase
+        const fraseSection = document.createElement('div');
+        fraseSection.className = 'card-section';
+        
+        const fraseLabel = document.createElement('label');
+        fraseLabel.className = 'card-label';
+        fraseLabel.textContent = '✍️ Frase Criada';
+        fraseSection.appendChild(fraseLabel);
+
+        const inputFrase = document.createElement('input');
+        inputFrase.type = 'text';
+        inputFrase.className = 'mobile-input';
+        inputFrase.id = `mobile-frase-${index}`;
+        inputFrase.placeholder = 'Crie uma frase usando o conectivo...';
+        fraseSection.appendChild(inputFrase);
+        card.appendChild(fraseSection);
+
+        mobileContainer.appendChild(card);
+    });
 }
 
 // Função para verificar as respostas
 async function verificarRespostas() {
-    if (validandoFrases) {
-        return; // Evitar múltiplas validações simultâneas
-    }
-
-    validandoFrases = true;
+    console.log('Verificando respostas...');
     
-    // Mostrar indicador de carregamento
-    const verificarBtn = document.getElementById('verificar-btn');
-    const textoOriginal = verificarBtn.textContent;
-    verificarBtn.textContent = 'Validando...';
-    verificarBtn.disabled = true;
+    let pontuacaoTotal = 0;
+    let pontuacaoMaxima = 0;
 
-    let pontuacao = 0;
-    let totalLacunas = 0;
-    let acertos = 0;
+    // Limpar feedback anterior
+    document.querySelectorAll('.input-field, .mobile-input').forEach(input => {
+        input.classList.remove('correct', 'incorrect');
+    });
 
-    try {
-        for (let index = 0; index < configuracaoTabela.length; index++) {
-            const linha = configuracaoTabela[index];
+    for (let i = 0; i < configuracaoTabela.length; i++) {
+        const linha = configuracaoTabela[i];
 
-            // Verificar conectivo
-            if (linha.conectivo.valor === '') {
-                totalLacunas++;
-                const inputConectivo = document.getElementById(`conectivo-${index}`);
-                const resposta = inputConectivo.value.trim();
-                
-                if (resposta !== '') {
-                    if (verificarResposta(resposta, linha.conectivo.corretos)) {
-                        pontuacao += linha.conectivo.pontos;
-                        acertos++;
-                        inputConectivo.classList.remove('incorrect');
-                        inputConectivo.classList.add('correct');
-                    } else {
-                        inputConectivo.classList.remove('correct');
-                        inputConectivo.classList.add('incorrect');
-                    }
-                } else {
-                    inputConectivo.classList.remove('correct', 'incorrect');
-                }
-            }
-
-            // Verificar tipo
-            if (linha.tipo.valor === '') {
-                totalLacunas++;
-                const inputTipo = document.getElementById(`tipo-${index}`);
-                const resposta = inputTipo.value.trim();
-                
-                if (resposta !== '') {
-                    if (verificarResposta(resposta, linha.tipo.corretos)) {
-                        pontuacao += linha.tipo.pontos;
-                        acertos++;
-                        inputTipo.classList.remove('incorrect');
-                        inputTipo.classList.add('correct');
-                    } else {
-                        inputTipo.classList.remove('correct');
-                        inputTipo.classList.add('incorrect');
-                    }
-                } else {
-                    inputTipo.classList.remove('correct', 'incorrect');
-                }
-            }
-
-            // Verificar frase (nova funcionalidade)
-            totalLacunas++;
-            const inputFrase = document.getElementById(`frase-${index}`);
-            const frase = inputFrase.value.trim();
+        // Verificar conectivo
+        if (linha.conectivo.valor === '') {
+            pontuacaoMaxima++;
+            const valorConectivo = obterValorConectivo(i);
+            const conectivoCorreto = linha.conectivo.respostas.some(resposta => 
+                resposta.toLowerCase() === valorConectivo.toLowerCase()
+            );
             
-            if (frase !== '') {
-                const conectivoUsado = obterConectivoUsado(linha, index);
-                
-                try {
-                    const resultadoValidacao = await validarFraseViaAPI(frase, conectivoUsado);
-                    
-                    if (resultadoValidacao.valida) {
-                        pontuacao += linha.frase.pontos;
-                        acertos++;
-                        inputFrase.classList.remove('incorrect');
-                        inputFrase.classList.add('correct');
-                        
-                        // Mostrar feedback positivo
-                        inputFrase.title = resultadoValidacao.feedback.join('\n');
-                    } else {
-                        inputFrase.classList.remove('correct');
-                        inputFrase.classList.add('incorrect');
-                        
-                        // Mostrar feedback de erro
-                        inputFrase.title = resultadoValidacao.feedback.join('\n');
-                    }
-                } catch (error) {
-                    console.error('Erro na validação da frase:', error);
-                    inputFrase.classList.remove('correct', 'incorrect');
-                    inputFrase.title = 'Erro na validação da frase';
-                }
+            if (conectivoCorreto) {
+                pontuacaoTotal++;
+                aplicarFeedback(i, 'conectivo', true);
             } else {
-                inputFrase.classList.remove('correct', 'incorrect');
-                inputFrase.title = '';
+                aplicarFeedback(i, 'conectivo', false);
             }
         }
 
-        pontuacaoTotal = pontuacao;
-        
-        // Mostrar feedback no console para debug
-        console.log(`Acertos: ${acertos}/${totalLacunas} | Pontuação: ${pontuacao}`);
-        
-        // Exibir modal de resultados
-        exibirModalResultados(pontuacao, totalLacunas);
-        
-    } finally {
-        // Restaurar botão
-        verificarBtn.textContent = textoOriginal;
-        verificarBtn.disabled = false;
-        validandoFrases = false;
-    }
-}
+        // Verificar tipo
+        if (linha.tipo.valor === '') {
+            pontuacaoMaxima++;
+            const valorTipo = obterValorTipo(i);
+            const tipoCorreto = linha.tipo.respostas.some(resposta => 
+                resposta.toLowerCase() === valorTipo.toLowerCase()
+            );
+            
+            if (tipoCorreto) {
+                pontuacaoTotal++;
+                aplicarFeedback(i, 'tipo', true);
+            } else {
+                aplicarFeedback(i, 'tipo', false);
+            }
+        }
 
-// Função para atualizar a pontuação na tela
-function atualizarPontuacao() {
-    const pontuacaoDisplay = document.getElementById('pontuacao-display');
-    pontuacaoDisplay.textContent = `Pontuação: ${pontuacaoTotal}`;
-    
-    // Adicionar animação de feedback
-    pontuacaoDisplay.classList.remove('feedback-correct');
-    setTimeout(() => {
-        pontuacaoDisplay.classList.add('feedback-correct');
-    }, 100);
+        // Verificar frase
+        pontuacaoMaxima++;
+        const valorFrase = obterValorFrase(i);
+        const conectivoLinha = obterConectivoLinha(i);
+        
+        if (valorFrase && conectivoLinha) {
+            const resultadoFrase = await validarFrase(valorFrase, conectivoLinha);
+            if (resultadoFrase.pontuacao > 0) {
+                pontuacaoTotal++;
+                aplicarFeedback(i, 'frase', true);
+            } else {
+                aplicarFeedback(i, 'frase', false);
+            }
+        } else {
+            aplicarFeedback(i, 'frase', false);
+        }
+    }
+
+    console.log(`Pontuação: ${pontuacaoTotal}/${pontuacaoMaxima}`);
+    exibirModalResultados(pontuacaoTotal, pontuacaoMaxima);
 }
 
 // Função para exibir modal de resultados
-function exibirModalResultados(pontuacao, totalLacunas) {
-    if (modalAberto) return;
+function exibirModalResultados(pontuacao, pontuacaoMaxima) {
+    if (modalResultadosAberto) return;
     
-    modalAberto = true;
+    modalResultadosAberto = true;
+    const modal = document.getElementById('modal-resultados-overlay');
+    const pontuacaoElement = document.querySelector('.pontuacao-final');
+    const performanceElement = document.querySelector('.performance');
     
-    // Atualizar conteúdo do modal
-    document.getElementById('pontos-obtidos').textContent = pontuacao;
-    document.getElementById('pontos-totais').textContent = totalLacunas;
+    // Atualizar pontuação
+    pontuacaoElement.innerHTML = `Sua pontuação: <span>${pontuacao}/${pontuacaoMaxima}</span>`;
     
-    // Determinar performance
-    const porcentagem = (pontuacao / totalLacunas) * 100;
-    const performanceTexto = document.getElementById('performance-texto');
-    const performanceDiv = document.getElementById('performance');
-    
-    // Remover classes anteriores
-    performanceDiv.classList.remove('performance-excelente', 'performance-bom', 'performance-regular');
+    // Calcular porcentagem e definir feedback
+    const porcentagem = (pontuacao / pontuacaoMaxima) * 100;
+    let feedbackTexto = '';
+    let feedbackClasse = '';
     
     if (porcentagem >= 80) {
-        performanceTexto.textContent = '🎉 Excelente! Você domina os conectivos!';
-        performanceDiv.classList.add('performance-excelente');
+        feedbackTexto = '🎉 Excelente! Você domina os conectivos!';
+        feedbackClasse = 'performance-excelente';
     } else if (porcentagem >= 60) {
-        performanceTexto.textContent = '👍 Bom trabalho! Continue praticando!';
-        performanceDiv.classList.add('performance-bom');
+        feedbackTexto = '👍 Bom trabalho! Continue praticando!';
+        feedbackClasse = 'performance-bom';
     } else {
-        performanceTexto.textContent = '📚 Continue estudando! Você vai melhorar!';
-        performanceDiv.classList.add('performance-regular');
+        feedbackTexto = '📚 Continue estudando! Você vai melhorar!';
+        feedbackClasse = 'performance-regular';
     }
     
-    // Exibir modal com animação
-    const modalOverlay = document.getElementById('modal-overlay');
+    performanceElement.textContent = feedbackTexto;
+    performanceElement.className = `performance ${feedbackClasse}`;
+    
+    // Mostrar modal
+    modal.classList.add('show');
     document.body.classList.add('modal-active');
-    modalOverlay.classList.add('show');
 }
 
-// Função para fechar modal
-function fecharModal() {
-    if (!modalAberto) return;
-    
-    const modalOverlay = document.getElementById('modal-overlay');
-    modalOverlay.classList.remove('show');
+// Função para fechar modal de resultados
+function fecharModalResultados() {
+    modalResultadosAberto = false;
+    const modal = document.getElementById('modal-resultados-overlay');
+    modal.classList.remove('show');
     document.body.classList.remove('modal-active');
-    
-    setTimeout(() => {
-        modalAberto = false;
-    }, 300);
 }
 
-// Função para gerar nova configuração de tabela
-function gerarNovaConfiguracaoTabela() {
-    const indiceAtual = configuracoesTabela.indexOf(configuracaoTabela);
-    let novoIndice;
-    
-    // Escolher uma configuração diferente da atual
-    do {
-        novoIndice = Math.floor(Math.random() * configuracoesTabela.length);
-    } while (novoIndice === indiceAtual && configuracoesTabela.length > 1);
-    
-    configuracaoTabela = configuracoesTabela[novoIndice];
-    
-    console.log(`Nova configuração de tabela selecionada: ${novoIndice + 1}`);
-}
-
-// Função para reiniciar o jogo com nova tabela
+// Função para reiniciar jogo com nova tabela
 function reiniciarJogoComNovaTabela() {
-    // Fechar modal
-    fecharModal();
+    fecharModalResultados();
     
-    // Gerar nova configuração
-    gerarNovaConfiguracaoTabela();
+    // Escolher próxima configuração
+    configuracaoAtual = (configuracaoAtual + 1) % configuracoesPossiveis.length;
+    configuracaoTabela = [...configuracoesPossiveis[configuracaoAtual]];
     
-    // Reiniciar jogo
-    setTimeout(() => {
-        reiniciarJogo();
-    }, 300);
+    // Recriar tabela
+    criarTabela();
 }
 
-// Função para exibir modal de regras
-function exibirModalRegras() {
-    if (modalRegrasAberto || modalAberto) return;
+// Funções do modal de regras
+function abrirModalRegras() {
+    if (modalRegrasAberto) return;
     
     modalRegrasAberto = true;
-    
-    const modalOverlay = document.getElementById('modal-regras-overlay');
+    const modal = document.getElementById('modal-regras-overlay');
+    modal.classList.add('show');
     document.body.classList.add('modal-active');
-    modalOverlay.classList.add('show');
 }
 
-// Função para fechar modal de regras
 function fecharModalRegras() {
-    if (!modalRegrasAberto) return;
-    
-    const modalOverlay = document.getElementById('modal-regras-overlay');
-    modalOverlay.classList.remove('show');
+    modalRegrasAberto = false;
+    const modal = document.getElementById('modal-regras-overlay');
+    modal.classList.remove('show');
     document.body.classList.remove('modal-active');
-    
-    setTimeout(() => {
-        modalRegrasAberto = false;
-    }, 300);
-}
-
-// Função para reiniciar o jogo
-function reiniciarJogo() {
-    pontuacaoTotal = 0;
-    criarTabela();
-    atualizarPontuacao();
-    
-    // Limpar classes de feedback
-    document.querySelectorAll('.input-field').forEach(input => {
-        input.classList.remove('correct', 'incorrect');
-        input.value = '';
-        input.title = '';
-    });
-}
-
-// Função para verificar status da API
-async function verificarStatusAPI() {
-    try {
-        const response = await fetch('/api/status');
-        const data = await response.json();
-        console.log('Status da API:', data);
-        return data.status === 'ativo';
-    } catch (error) {
-        console.warn('API de validação não disponível, usando validação local:', error);
-        return false;
-    }
 }
 
 // Função de inicialização
-async function inicializar() {
-    // Verificar status da API
-    const apiDisponivel = await verificarStatusAPI();
-    if (!apiDisponivel) {
-        console.warn('API de validação não disponível. Usando validação local básica.');
-    }
-    
-    // Criar a tabela
+function inicializar() {
+    // Configurar tabela inicial
+    configuracaoTabela = [...configuracoesPossiveis[configuracaoAtual]];
     criarTabela();
     
-    // Configurar o botão de verificar
-    const verificarBtn = document.getElementById('verificar-btn');
-    verificarBtn.addEventListener('click', verificarRespostas);
+    // Configurar eventos
+    document.getElementById('verificar-btn').addEventListener('click', verificarRespostas);
+    document.getElementById('tentar-novamente-btn').addEventListener('click', reiniciarJogoComNovaTabela);
+    document.getElementById('regras-btn').addEventListener('click', abrirModalRegras);
+    document.getElementById('fechar-regras-btn').addEventListener('click', fecharModalRegras);
     
-    // Configurar botão "Tentar Novamente" do modal
-    const tentarNovamenteBtn = document.getElementById('tentar-novamente-btn');
-    tentarNovamenteBtn.addEventListener('click', reiniciarJogoComNovaTabela);
-    
-    // Configurar botão "Regras" do cabeçalho
-    const regrasBtn = document.getElementById('regras-btn');
-    regrasBtn.addEventListener('click', exibirModalRegras);
-    
-    // Configurar botão fechar modal de regras
-    const fecharRegrasBtn = document.getElementById('fechar-regras-btn');
-    fecharRegrasBtn.addEventListener('click', fecharModalRegras);
-    
-    // Configurar clique fora do modal para fechar (opcional)
-    const modalOverlay = document.getElementById('modal-overlay');
-    modalOverlay.addEventListener('click', function(e) {
-        if (e.target === modalOverlay) {
-            fecharModal();
+    // Fechar modal ao clicar fora
+    document.getElementById('modal-resultados-overlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharModalResultados();
         }
     });
     
-    // Configurar clique fora do modal de regras para fechar
-    const modalRegrasOverlay = document.getElementById('modal-regras-overlay');
-    modalRegrasOverlay.addEventListener('click', function(e) {
-        if (e.target === modalRegrasOverlay) {
+    document.getElementById('modal-regras-overlay').addEventListener('click', function(e) {
+        if (e.target === this) {
             fecharModalRegras();
         }
     });
-    
-    // Adicionar evento de Enter nos campos de input
-    document.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && e.target.classList.contains('input-field')) {
-            verificarRespostas();
-        }
-    });
-    
-    // Inicializar pontuação
-    atualizarPontuacao();
-    
-    console.log('Jogo Conectivo Rápido inicializado com validação de frases!');
-    console.log('Nova configuração da tabela:');
-    configuracaoTabela.forEach((linha, index) => {
-        const conectivoInfo = linha.conectivo.valor === '' ? `[PREENCHER: ${linha.conectivo.corretos.join(', ')}]` : linha.conectivo.valor;
-        const tipoInfo = linha.tipo.valor === '' ? `[PREENCHER: ${linha.tipo.corretos.join(', ')}]` : linha.tipo.valor;
-        console.log(`Linha ${index + 1}: ${conectivoInfo} | ${tipoInfo} | [FRASE COM VALIDAÇÃO]`);
-    });
 }
 
-// Aguardar o carregamento completo da página
+// Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', inicializar);
 
