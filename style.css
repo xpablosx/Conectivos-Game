@@ -129,6 +129,9 @@ main {
     font-size: 0.95rem;
     transition: all 0.3s ease;
     background: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .input-field:focus {
@@ -146,6 +149,13 @@ main {
 .input-field.incorrect {
     border-color: #f44336;
     background-color: #ffeaea;
+}
+
+/* Prevenir zoom no iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .input-field, .mobile-input {
+        font-size: 16px !important;
+    }
 }
 
 /* Células preenchidas */
@@ -343,10 +353,14 @@ main {
         padding: 1rem;
         border: 2px solid #e0e0e0;
         border-radius: 12px;
-        font-size: 1rem;
+        font-size: 16px !important; /* Prevenir zoom no iOS */
         background: white;
         transition: all 0.3s ease;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-tap-highlight-color: transparent;
     }
     
     .mobile-input:focus {

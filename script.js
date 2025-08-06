@@ -199,6 +199,20 @@ function criarTabelaDesktop() {
             input.className = 'input-field';
             input.id = `conectivo-${index}`;
             input.placeholder = 'Digite o conectivo...';
+            input.autocomplete = 'off';
+            input.autocorrect = 'off';
+            input.autocapitalize = 'off';
+            input.spellcheck = false;
+            
+            // Prevenir comportamentos padrão que causam atualização
+            input.addEventListener('keydown', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('input', function(e) {
+                e.stopPropagation();
+            });
+            
             tdConectivo.appendChild(input);
         } else {
             const span = document.createElement('span');
@@ -217,6 +231,20 @@ function criarTabelaDesktop() {
             input.className = 'input-field';
             input.id = `tipo-${index}`;
             input.placeholder = 'Digite o tipo...';
+            input.autocomplete = 'off';
+            input.autocorrect = 'off';
+            input.autocapitalize = 'off';
+            input.spellcheck = false;
+            
+            // Prevenir comportamentos padrão que causam atualização
+            input.addEventListener('keydown', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('input', function(e) {
+                e.stopPropagation();
+            });
+            
             tdTipo.appendChild(input);
         } else {
             const span = document.createElement('span');
@@ -234,6 +262,20 @@ function criarTabelaDesktop() {
         inputFrase.className = 'input-field';
         inputFrase.id = `frase-${index}`;
         inputFrase.placeholder = 'Crie uma frase usando o conectivo...';
+        inputFrase.autocomplete = 'off';
+        inputFrase.autocorrect = 'off';
+        inputFrase.autocapitalize = 'off';
+        inputFrase.spellcheck = false;
+        
+        // Prevenir comportamentos padrão que causam atualização
+        inputFrase.addEventListener('keydown', function(e) {
+            e.stopPropagation();
+        });
+        
+        inputFrase.addEventListener('input', function(e) {
+            e.stopPropagation();
+        });
+        
         tdFrase.appendChild(inputFrase);
         tr.appendChild(tdFrase);
 
@@ -291,6 +333,28 @@ function criarLayoutMobile() {
             input.className = 'mobile-input';
             input.id = `mobile-conectivo-${index}`;
             input.placeholder = 'Digite o conectivo...';
+            input.autocomplete = 'off';
+            input.autocorrect = 'off';
+            input.autocapitalize = 'off';
+            input.spellcheck = false;
+            
+            // Prevenir comportamentos padrão que causam atualização
+            input.addEventListener('keydown', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('input', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('focus', function(e) {
+                e.stopPropagation();
+                // Prevenir zoom no iOS
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    input.style.fontSize = '16px';
+                }
+            });
+            
             conectivoSection.appendChild(input);
         } else {
             const filled = document.createElement('div');
@@ -315,6 +379,28 @@ function criarLayoutMobile() {
             input.className = 'mobile-input';
             input.id = `mobile-tipo-${index}`;
             input.placeholder = 'Digite o tipo...';
+            input.autocomplete = 'off';
+            input.autocorrect = 'off';
+            input.autocapitalize = 'off';
+            input.spellcheck = false;
+            
+            // Prevenir comportamentos padrão que causam atualização
+            input.addEventListener('keydown', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('input', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('focus', function(e) {
+                e.stopPropagation();
+                // Prevenir zoom no iOS
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    input.style.fontSize = '16px';
+                }
+            });
+            
             tipoSection.appendChild(input);
         } else {
             const filled = document.createElement('div');
@@ -338,6 +424,28 @@ function criarLayoutMobile() {
         inputFrase.className = 'mobile-input';
         inputFrase.id = `mobile-frase-${index}`;
         inputFrase.placeholder = 'Crie uma frase usando o conectivo...';
+        inputFrase.autocomplete = 'off';
+        inputFrase.autocorrect = 'off';
+        inputFrase.autocapitalize = 'off';
+        inputFrase.spellcheck = false;
+        
+        // Prevenir comportamentos padrão que causam atualização
+        inputFrase.addEventListener('keydown', function(e) {
+            e.stopPropagation();
+        });
+        
+        inputFrase.addEventListener('input', function(e) {
+            e.stopPropagation();
+        });
+        
+        inputFrase.addEventListener('focus', function(e) {
+            e.stopPropagation();
+            // Prevenir zoom no iOS
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                inputFrase.style.fontSize = '16px';
+            }
+        });
+        
         fraseSection.appendChild(inputFrase);
         card.appendChild(fraseSection);
 
@@ -503,6 +611,26 @@ function inicializar() {
     window.addEventListener('resize', function() {
         // Recriar layout quando a janela for redimensionada
         criarTabela();
+    });
+    
+    // Prevenir comportamentos padrão que podem causar atualização da página
+    document.addEventListener('keydown', function(e) {
+        // Prevenir F5 e Ctrl+R
+        if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+            e.preventDefault();
+        }
+    });
+    
+    // Prevenir submit de formulários (caso algum seja criado dinamicamente)
+    document.addEventListener('submit', function(e) {
+        e.preventDefault();
+    });
+    
+    // Prevenir comportamentos padrão em inputs
+    document.addEventListener('input', function(e) {
+        if (e.target.matches('.input-field, .mobile-input')) {
+            e.stopPropagation();
+        }
     });
     
     // Fechar modal ao clicar fora
