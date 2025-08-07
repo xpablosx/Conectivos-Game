@@ -20,16 +20,6 @@ header {
     background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-
-.header-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 header h1 {
@@ -37,30 +27,6 @@ header h1 {
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin: 0;
-    flex: 1;
-}
-
-.regras-btn {
-    position: absolute;
-    right: 0;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.regras-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Container principal */
@@ -158,44 +124,55 @@ main {
     border: 2px solid #bbdefb;
 }
 
-/* Botão Verificar Fixo */
-.verificar-btn-fixo {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
+/* Container do botão */
+.button-container {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+/* Botão Verificar */
+#verificar-btn {
     background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     color: white;
     border: none;
-    padding: 1.2rem 2.5rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 50px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.4);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    z-index: 999;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
-.verificar-btn-fixo:hover {
+#verificar-btn:hover {
     background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 12px 35px rgba(25, 118, 210, 0.5);
-}
-
-.verificar-btn-fixo:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
 }
 
-.verificar-btn-fixo:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+#verificar-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+/* Container da pontuação */
+.pontuacao-container {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+#pontuacao-display {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1976d2;
+    background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    border: 2px solid #bbdefb;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsividade */
@@ -537,222 +514,6 @@ body.modal-active header {
     .pontuacao-final {
         font-size: 1.1em;
         padding: 12px;
-    }
-}
-
-
-/* Modal de Regras */
-.modal-regras {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 20px;
-    padding: 0;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 700px;
-    width: 95%;
-    max-height: 90vh;
-    overflow: hidden;
-    transform: scale(0.7) translateY(50px);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 3px solid #4a90e2;
-    position: relative;
-}
-
-.modal-overlay.show .modal-regras {
-    transform: scale(1) translateY(0);
-}
-
-.modal-header {
-    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
-    color: white;
-    padding: 1.5rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 17px 17px 0 0;
-}
-
-.modal-header h2 {
-    margin: 0;
-    font-size: 1.8em;
-    font-weight: 700;
-}
-
-.fechar-modal-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.fechar-modal-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-
-.modal-body {
-    padding: 2rem;
-    max-height: calc(90vh - 120px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #4a90e2 #f0f0f0;
-}
-
-.modal-body::-webkit-scrollbar {
-    width: 8px;
-}
-
-.modal-body::-webkit-scrollbar-track {
-    background: #f0f0f0;
-    border-radius: 4px;
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-    background: #4a90e2;
-    border-radius: 4px;
-}
-
-.modal-body h3 {
-    color: #1976d2;
-    font-size: 1.3em;
-    margin: 1.5rem 0 1rem 0;
-    font-weight: 600;
-    border-bottom: 2px solid #e3f2fd;
-    padding-bottom: 0.5rem;
-}
-
-.modal-body h3:first-child {
-    margin-top: 0;
-}
-
-.modal-body h4 {
-    color: #2c3e50;
-    font-size: 1.1em;
-    margin: 1rem 0 0.5rem 0;
-    font-weight: 600;
-}
-
-.modal-body p {
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.modal-body ul {
-    color: #555;
-    line-height: 1.6;
-    margin-left: 1.2rem;
-    margin-bottom: 1rem;
-}
-
-.modal-body li {
-    margin-bottom: 0.5rem;
-}
-
-.regra-item {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-    border-left: 4px solid #4a90e2;
-}
-
-.conectivos-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.conectivo-tipo {
-    background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #bbdefb;
-    font-size: 0.95em;
-    line-height: 1.4;
-}
-
-.conectivo-tipo strong {
-    color: #1976d2;
-    display: block;
-    margin-bottom: 0.3rem;
-}
-
-/* Responsividade do modal de regras */
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .regras-btn {
-        position: static;
-        margin-top: 1rem;
-    }
-    
-    .verificar-btn-fixo {
-        bottom: 20px;
-        right: 20px;
-        padding: 1rem 2rem;
-        font-size: 1.1rem;
-    }
-    
-    .modal-regras {
-        width: 98%;
-        max-height: 95vh;
-    }
-    
-    .modal-header {
-        padding: 1rem 1.5rem;
-    }
-    
-    .modal-header h2 {
-        font-size: 1.5em;
-    }
-    
-    .modal-body {
-        padding: 1.5rem;
-    }
-    
-    .conectivos-lista {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 2rem;
-    }
-    
-    .verificar-btn-fixo {
-        bottom: 15px;
-        right: 15px;
-        padding: 0.9rem 1.8rem;
-        font-size: 1rem;
-    }
-    
-    .modal-header {
-        padding: 1rem;
-    }
-    
-    .modal-header h2 {
-        font-size: 1.3em;
-    }
-    
-    .modal-body {
-        padding: 1rem;
-    }
-    
-    .regra-item {
-        padding: 1rem;
     }
 }
 

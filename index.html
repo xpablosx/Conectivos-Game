@@ -8,12 +8,7 @@
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <h1>Jogo: Conectivo Rápido</h1>
-            <button id="regras-btn" class="regras-btn">
-                📋 Regras
-            </button>
-        </div>
+        <h1>Jogo: Conectivo Rápido</h1>
     </header>
 
     <main>
@@ -30,77 +25,16 @@
                     <!-- As linhas serão geradas dinamicamente pelo JavaScript -->
                 </tbody>
             </table>
-        </div>
 
-        <!-- Botão Verificar Fixo -->
-        <button id="verificar-btn" class="verificar-btn-fixo" type="button">
-            ✅ Verificar
-        </button>
+            <div class="button-container">
+                <button id="verificar-btn" type="button">Verificar</button>
+            </div>
+
+            <div id="pontuacao-container" class="pontuacao-container">
+                <p id="pontuacao-display">Pontuação: 0</p>
+            </div>
+        </div>
     </main>
-
-    <!-- Modal de Regras -->
-    <div id="modal-regras-overlay" class="modal-overlay">
-        <div id="modal-regras" class="modal-regras">
-            <div class="modal-header">
-                <h2>📋 Regras do Jogo</h2>
-                <button id="fechar-regras-btn" class="fechar-modal-btn">✖</button>
-            </div>
-            <div class="modal-body">
-                <h3>🎯 Objetivo</h3>
-                <p>Complete a tabela preenchendo os campos em branco com conectivos, tipos de conectivos e frases coerentes.</p>
-                
-                <h3>📝 Como Preencher</h3>
-                <div class="regra-item">
-                    <h4>🔗 Conectivos e Tipos:</h4>
-                    <ul>
-                        <li>Preencha os campos vazios com conectivos ou tipos corretos</li>
-                        <li>Use os conectivos do banco de dados do jogo</li>
-                        <li>Múltiplas respostas podem ser aceitas para cada tipo</li>
-                    </ul>
-                </div>
-                
-                <div class="regra-item">
-                    <h4>✍️ Frases:</h4>
-                    <ul>
-                        <li><strong>Primeira letra maiúscula</strong> e <strong>ponto final</strong> obrigatórios</li>
-                        <li>Mínimo de <strong>10 caracteres</strong> e <strong>3 palavras</strong></li>
-                        <li>Deve conter o <strong>conectivo da linha</strong></li>
-                        <li>Gramática e coerência em <strong>português brasileiro</strong></li>
-                        <li>Exemplo: "Ademais, o estudo é fundamental para o sucesso."</li>
-                    </ul>
-                </div>
-                
-                <h3>🏆 Pontuação</h3>
-                <ul>
-                    <li><strong>1 ponto</strong> por conectivo correto</li>
-                    <li><strong>1 ponto</strong> por tipo de conectivo correto</li>
-                    <li><strong>1 ponto</strong> por frase válida e coerente</li>
-                </ul>
-                
-                <h3>📚 Tipos de Conectivos</h3>
-                <div class="conectivos-lista">
-                    <div class="conectivo-tipo">
-                        <strong>Adição:</strong> Ademais, Outrossim, E assim
-                    </div>
-                    <div class="conectivo-tipo">
-                        <strong>Conclusão:</strong> Portanto, Por isso, Dessa forma
-                    </div>
-                    <div class="conectivo-tipo">
-                        <strong>Explicação:</strong> Logo, Então, Seguindo o raciocínio
-                    </div>
-                    <div class="conectivo-tipo">
-                        <strong>Conformidade:</strong> Conforme, É esse respeito
-                    </div>
-                    <div class="conectivo-tipo">
-                        <strong>Contraste/Oposição:</strong> Entretanto, Todavia
-                    </div>
-                    <div class="conectivo-tipo">
-                        <strong>Causa e consequência:</strong> A partir disso, Sob essa perspectiva
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal de Resultados -->
     <div id="modal-overlay" class="modal-overlay">

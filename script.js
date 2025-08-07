@@ -13,7 +13,6 @@ const conectivosDB = {
 let pontuacaoTotal = 0;
 let validandoFrases = false;
 let modalAberto = false;
-let modalRegrasAberto = false;
 
 // Configurações de tabela para variedade no jogo
 const configuracoesTabela = [
@@ -479,30 +478,6 @@ function reiniciarJogoComNovaTabela() {
     }, 300);
 }
 
-// Função para exibir modal de regras
-function exibirModalRegras() {
-    if (modalRegrasAberto || modalAberto) return;
-    
-    modalRegrasAberto = true;
-    
-    const modalOverlay = document.getElementById('modal-regras-overlay');
-    document.body.classList.add('modal-active');
-    modalOverlay.classList.add('show');
-}
-
-// Função para fechar modal de regras
-function fecharModalRegras() {
-    if (!modalRegrasAberto) return;
-    
-    const modalOverlay = document.getElementById('modal-regras-overlay');
-    modalOverlay.classList.remove('show');
-    document.body.classList.remove('modal-active');
-    
-    setTimeout(() => {
-        modalRegrasAberto = false;
-    }, 300);
-}
-
 // Função para reiniciar o jogo
 function reiniciarJogo() {
     pontuacaoTotal = 0;
@@ -549,27 +524,11 @@ async function inicializar() {
     const tentarNovamenteBtn = document.getElementById('tentar-novamente-btn');
     tentarNovamenteBtn.addEventListener('click', reiniciarJogoComNovaTabela);
     
-    // Configurar botão "Regras" do cabeçalho
-    const regrasBtn = document.getElementById('regras-btn');
-    regrasBtn.addEventListener('click', exibirModalRegras);
-    
-    // Configurar botão fechar modal de regras
-    const fecharRegrasBtn = document.getElementById('fechar-regras-btn');
-    fecharRegrasBtn.addEventListener('click', fecharModalRegras);
-    
     // Configurar clique fora do modal para fechar (opcional)
     const modalOverlay = document.getElementById('modal-overlay');
     modalOverlay.addEventListener('click', function(e) {
         if (e.target === modalOverlay) {
             fecharModal();
-        }
-    });
-    
-    // Configurar clique fora do modal de regras para fechar
-    const modalRegrasOverlay = document.getElementById('modal-regras-overlay');
-    modalRegrasOverlay.addEventListener('click', function(e) {
-        if (e.target === modalRegrasOverlay) {
-            fecharModalRegras();
         }
     });
     
