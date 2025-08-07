@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo: Conectivo Rápido</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Jogo: Conectivo Rápido</h1>
+    </header>
+
+    <main>
+        <div class="game-container">
+            <table id="conectivos-table">
+                <thead>
+                    <tr>
+                        <th>Conectivo</th>
+                        <th>Tipo de conectivo</th>
+                        <th>Frase criada pelo usuário</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- As linhas serão geradas dinamicamente pelo JavaScript -->
+                </tbody>
+            </table>
+
+            <div class="button-container">
+                <button id="verificar-btn" type="button">Verificar</button>
+            </div>
+
+            <div id="pontuacao-container" class="pontuacao-container">
+                <p id="pontuacao-display">Pontuação: 0</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Resultados -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="modal-resultados" class="modal-resultados">
+            <h2>🎉 Resultados</h2>
+            <div id="pontuacao-final" class="pontuacao-final">
+                Sua pontuação: <span id="pontos-obtidos">0</span>/<span id="pontos-totais">12</span>
+            </div>
+            <div id="performance" class="performance">
+                <span id="performance-texto">Bom trabalho!</span>
+            </div>
+            <button id="tentar-novamente-btn" class="tentar-novamente-btn">
+                🔄 Tentar Novamente
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
