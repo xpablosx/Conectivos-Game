@@ -151,12 +151,17 @@ main {
     background-color: #ffeaea;
 }
 
-/* Prevenir zoom no iOS */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    .input-field, .mobile-input {
+    /* Garantir comportamento correto em mobile */
+    body {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+    
+    /* Prevenir zoom em todos os inputs */
+    input, textarea, select {
         font-size: 16px !important;
     }
-}
 
 /* Células preenchidas */
 .filled-cell {
@@ -347,38 +352,25 @@ main {
         letter-spacing: 0.5px;
     }
     
-    /* Campos de entrada mobile */
+    /* Campos de entrada mobile - versão simplificada */
     .mobile-input {
         width: 100%;
         padding: 1rem;
         border: 2px solid #e0e0e0;
         border-radius: 12px;
-        font-size: 16px !important; /* Prevenir zoom no iOS */
+        font-size: 16px !important;
         background: white;
-        transition: all 0.3s ease;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        /* Propriedades essenciais apenas */
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        -webkit-tap-highlight-color: transparent;
-        /* Melhorias para mobile */
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        user-select: text;
-        touch-action: manipulation;
+        outline: none;
     }
     
     .mobile-input:focus {
-        outline: none;
         border-color: #1976d2;
         box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.1);
-        transform: translateY(-1px);
-        /* Garantir que o campo permaneça focado */
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        user-select: text;
     }
     
     .mobile-input::placeholder {

@@ -339,36 +339,11 @@ function criarLayoutMobile() {
             input.spellcheck = false;
             input.inputMode = 'text';
             
-            // Solução robusta para problemas de teclado mobile
-            input.addEventListener('touchstart', function(e) {
-                e.stopPropagation();
-                this.focus();
-            }, { passive: true });
-            
-            input.addEventListener('focus', function(e) {
-                e.stopPropagation();
-                // Scroll suave para o campo em foco
-                setTimeout(() => {
-                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-                
-                // Prevenir zoom no iOS
-                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-                    this.style.fontSize = '16px';
-                }
-            });
-            
-            input.addEventListener('blur', function(e) {
-                e.stopPropagation();
-            });
-            
-            input.addEventListener('keydown', function(e) {
-                e.stopPropagation();
-            });
-            
-            input.addEventListener('input', function(e) {
-                e.stopPropagation();
-            });
+            // Solução mais radical - sem event listeners que possam interferir
+            input.style.webkitUserSelect = 'text';
+            input.style.userSelect = 'text';
+            input.style.webkitTouchCallout = 'default';
+            input.style.webkitTapHighlightColor = 'transparent';
             
             conectivoSection.appendChild(input);
         } else {
@@ -400,36 +375,11 @@ function criarLayoutMobile() {
             input.spellcheck = false;
             input.inputMode = 'text';
             
-            // Solução robusta para problemas de teclado mobile
-            input.addEventListener('touchstart', function(e) {
-                e.stopPropagation();
-                this.focus();
-            }, { passive: true });
-            
-            input.addEventListener('focus', function(e) {
-                e.stopPropagation();
-                // Scroll suave para o campo em foco
-                setTimeout(() => {
-                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-                
-                // Prevenir zoom no iOS
-                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-                    this.style.fontSize = '16px';
-                }
-            });
-            
-            input.addEventListener('blur', function(e) {
-                e.stopPropagation();
-            });
-            
-            input.addEventListener('keydown', function(e) {
-                e.stopPropagation();
-            });
-            
-            input.addEventListener('input', function(e) {
-                e.stopPropagation();
-            });
+            // Solução mais radical - sem event listeners que possam interferir
+            input.style.webkitUserSelect = 'text';
+            input.style.userSelect = 'text';
+            input.style.webkitTouchCallout = 'default';
+            input.style.webkitTapHighlightColor = 'transparent';
             
             tipoSection.appendChild(input);
         } else {
@@ -460,36 +410,11 @@ function criarLayoutMobile() {
         inputFrase.spellcheck = false;
         inputFrase.inputMode = 'text';
         
-        // Solução robusta para problemas de teclado mobile
-        inputFrase.addEventListener('touchstart', function(e) {
-            e.stopPropagation();
-            this.focus();
-        }, { passive: true });
-        
-        inputFrase.addEventListener('focus', function(e) {
-            e.stopPropagation();
-            // Scroll suave para o campo em foco
-            setTimeout(() => {
-                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
-            
-            // Prevenir zoom no iOS
-            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-                this.style.fontSize = '16px';
-            }
-        });
-        
-        inputFrase.addEventListener('blur', function(e) {
-            e.stopPropagation();
-        });
-        
-        inputFrase.addEventListener('keydown', function(e) {
-            e.stopPropagation();
-        });
-        
-        inputFrase.addEventListener('input', function(e) {
-            e.stopPropagation();
-        });
+        // Solução mais radical - sem event listeners que possam interferir
+        inputFrase.style.webkitUserSelect = 'text';
+        inputFrase.style.userSelect = 'text';
+        inputFrase.style.webkitTouchCallout = 'default';
+        inputFrase.style.webkitTapHighlightColor = 'transparent';
         
         fraseSection.appendChild(inputFrase);
         card.appendChild(fraseSection);
